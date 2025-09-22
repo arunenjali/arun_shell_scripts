@@ -4,8 +4,8 @@ echo "enter the filename:"
 read filename
 
 if [ -e "$DIR/$filename" ]; then
-    echo "The given file is $filename is exists"
     ls -ltr "$DIR/$filename"
+    echo "The given file is $filename is exists"
 else
     echo "The given file is $filename is  not exists"
 fi
