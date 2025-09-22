@@ -1,13 +1,24 @@
 #!/bin/bash
 
-echo "### Checking the disc space ###";
-ROOT=$(df -h / | awk 'NR==2 {print $5}' |tr -d %)
-BOOT=$(df -h /boot | awk 'NR==2 {print $5}' |tr -d %)
-if [ "$ROOT" -gt 25 ]; then
-    echo "Root mount point is reached to maximum size $ROOT%"
-elif [ "$BOOT" -gt 60 ]; then
-    echo "Boot mount point is reached to maximum size $BOOT% and it is Critical"
+echo "### Checking the disk space ###"
+
+ROOT=$(df -h / | awk 'NR==2 {print $5}' | tr -d '%')
+BOOT=$(df -h /boot | awk 'NR==2 {print $5}' | tr -d '%')
+
+# Root partition check
+if [ "$ROOT" -ge 90 ]; then
+    echo "CRITICAL: Root mount point usage is $ROOT%"
+elif [ "$ROOT" -ge 80 ]; then
+    echo "WARNING: Root mount point usage is $ROOT%"
 else
-    echo "All mount points are under control: ROOT=$ROOT%, BOOT=$BOOT%"
+    echo "OK: Root mount point usage is $ROOT%"
 fi
-    
+
+# Boot partition check
+if [ "$BOOT" -ge 90 ]; then
+    echo "CRITICAL: Boot mount point usage is $BOOT%"
+elif [ "$BOOT" -ge 80 ]; then
+    echo "WARNING: Boot mount point usage is $BOOT%"
+else
+    echo "OK: Boot mount point usage is $BOOT%"
+fi
